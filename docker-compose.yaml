@@ -1,0 +1,57 @@
+version: "2.9"
+
+services:
+    
+  microservice-db-server:
+    image: postgres:latest
+    container_name: microservice-db-servers
+    healthcheck:
+      test: pg_isready
+      interval: 15s
+      timeout: 10s
+      retries: 5
+      start_period: 30s
+    volumes:
+      - microservice-db-server-volume:/var/lib/postgresql/data
+    env_file:
+      - .env
+    ports:
+      - '2000:5432'
+
+  microservice-db-admin:
+    image: dpage/pgadmin4
+    container_name: microservice-db-admin
+    volumes:
+      - microservice-db-admin-volume:/var/lib/pgadmin
+    env_file:
+      - .env
+    ports:
+      - '2001:80'
+    depends_on:
+      microservice-db-server:
+        condition: service_healthy
+        
+  microservice-db-migrate:
+    image: redgate/flyway
+    container_name: microservice-db-migrate
+    command: migrate -user=${POSTGRES_USER} -password=${POSTGRES_PASSWORD} -url=${FLYWAY_JDBC}
+    volumes:
+      - ./domain.data/Migration:/flyway/sql
+    env_file:
+      - .env
+    depends_on:
+      microservice-db-server:
+        condition: service_healthy
+        
+volumes:
+  
+  microservice-db-server-volume:
+    driver: local
+  
+  microservice-db-admin-volume:
+    driver: local
+
+networks:
+    
+  default:
+    name: microservice-net
