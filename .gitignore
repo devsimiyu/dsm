@@ -44,3 +44,6 @@
 
 # Environment files
 .env
+
+# Signing Keys
+**/Certs/*
