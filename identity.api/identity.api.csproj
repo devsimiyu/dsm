@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk.Web">
 
   <ItemGroup>
-    <ProjectReference Include="..\domain.data\domain.data.csproj" />
+    <ProjectReference Include="..\core.data\core.data.csproj" />
   </ItemGroup>
 
   <ItemGroup>

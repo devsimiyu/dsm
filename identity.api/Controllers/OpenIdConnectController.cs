@@ -1,19 +1,19 @@
-﻿using identity.api.Service;
+﻿using System.Net.Mime;
+using identity.api.Service;
 using Microsoft.AspNetCore.Mvc;
 
 namespace identity.api.Controllers;
 
 [Route(".well-known")]
-[ApiController]
+[Produces(MediaTypeNames.Application.Json)]
 public class OpenIdConnectController : ControllerBase
 {
     private readonly OpenIdConnectService _openIdConnectService;
 
     public OpenIdConnectController(OpenIdConnectService openIdConnectService)
-        => _openIdConnectService = openIdConnectService;
+        => _openIdConnectService = openIdConnectService ?? throw new ArgumentNullException();
 
     [HttpGet("openid-configuration")]
-    [Produces("application/json")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     public ActionResult GetConfigurationMetadata()
     {
@@ -22,7 +22,6 @@ public class OpenIdConnectController : ControllerBase
     }
 
     [HttpGet("jwks.json")]
-    [Produces("application/json")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     public async Task<IActionResult> GetJsonWebKeySets()
     {

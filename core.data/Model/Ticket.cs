@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace domain.data.Model;
+namespace core.data.Model;
 
 [Table("tickets", Schema = "public")]
 public class Ticket : EntityBase

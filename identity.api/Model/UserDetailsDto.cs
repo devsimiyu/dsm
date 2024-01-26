@@ -1,4 +1,4 @@
-﻿using domain.data.Model;
+﻿using core.data.Model;
 
 namespace identity.api.Model;
 

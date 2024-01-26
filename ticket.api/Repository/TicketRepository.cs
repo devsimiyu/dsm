@@ -1,23 +1,19 @@
-﻿using domain.data.Model;
-using domain.data.Persistence;
+﻿using core.data.Model;
+using core.data.Persistence;
 using Microsoft.EntityFrameworkCore;
 using ticket.api.Model;
+using ticket.api.Service;
 
 namespace ticket.api.Repository;
 
-public class TicketRepository
+public class TicketRepository(PersistenceContext persistenceContext, DocumentService documentService)
 {
-    private readonly PersistenceContext _persistenceContext;
-
-    public TicketRepository(PersistenceContext persistenceContext)
-        => _persistenceContext = persistenceContext;
-
     public async Task<TicketNewDto> AddTicket(TicketCreateDto ticketCreateDto, long userId)
     {
-        var strategy = _persistenceContext.Database.CreateExecutionStrategy();
+        var strategy = persistenceContext.Database.CreateExecutionStrategy();
         var result = await strategy.ExecuteAsync(async () =>
         {
-            using var transaction = await _persistenceContext.Database.BeginTransactionAsync();
+            using var transaction = await persistenceContext.Database.BeginTransactionAsync();
             try
             {
                 var ticket = new Ticket
@@ -26,8 +22,9 @@ public class TicketRepository
                     Description = ticketCreateDto.Description,
                     UserId = userId,
                 };
-                _persistenceContext.Tickets.Add(ticket);
-                await _persistenceContext.SaveChangesAsync();
+                persistenceContext.Tickets.Add(ticket);
+                await persistenceContext.SaveChangesAsync();
+                await documentService.UploadAttachment(ticketCreateDto.attachment, ticket.Id);
                 var ticketNewDto = new TicketNewDto
                 {
                     Id = ticket.Id,
@@ -48,7 +45,7 @@ public class TicketRepository
 
     public async Task<TicketDetailsDto?> FindTicket(long id)
     {
-        var ticket = await _persistenceContext.Tickets
+        var ticket = await persistenceContext.Tickets
             .Include(ticket => ticket.Documents.Where(document => document.DeletedAt == null))
             .Where(ticket => ticket.Id == id)
             .FirstOrDefaultAsync();
@@ -69,7 +66,7 @@ public class TicketRepository
 
     public async Task<List<TicketItemDto>> SearchTickets()
     {
-        var tickets = await _persistenceContext.Tickets
+        var tickets = await persistenceContext.Tickets
             .Include(ticket => ticket.User)
             .Where(ticket => ticket.DeletedAt == null)
             .OrderByDescending(ticket => ticket.CreatedAt)
@@ -92,17 +89,17 @@ public class TicketRepository
 
     public async Task<int> UpdateTicket(TicketUpdateDto ticketUpdateDto, long id)
     {
-        var strategy = _persistenceContext.Database.CreateExecutionStrategy();
+        var strategy = persistenceContext.Database.CreateExecutionStrategy();
         var result = await strategy.ExecuteAsync(async () =>
         {
-            using var transaction = await _persistenceContext.Database.BeginTransactionAsync();
+            using var transaction = await persistenceContext.Database.BeginTransactionAsync();
             try
             {
-                var ticket = await _persistenceContext.Tickets.FindAsync(id);
+                var ticket = await persistenceContext.Tickets.FindAsync(id);
                 if (ticket == null) return 0;
                 ticket.Title = ticketUpdateDto.Title;
                 ticket.Description = ticketUpdateDto.Description;
-                await _persistenceContext.SaveChangesAsync();
+                await persistenceContext.SaveChangesAsync();
                 await transaction.CommitAsync();
                 return 1;
             }
@@ -117,16 +114,16 @@ public class TicketRepository
 
     public async Task<int> DeleteTicket(long id)
     {
-        var strategy = _persistenceContext.Database.CreateExecutionStrategy();
+        var strategy = persistenceContext.Database.CreateExecutionStrategy();
         var result = await strategy.ExecuteAsync<int>(async () =>
         {
-            using var transaction = await _persistenceContext.Database.BeginTransactionAsync();
+            using var transaction = await persistenceContext.Database.BeginTransactionAsync();
             try
             {
-                var ticket = await _persistenceContext.Tickets.FindAsync(id);
+                var ticket = await persistenceContext.Tickets.FindAsync(id);
                 if (ticket == null ) return 0;
-                _persistenceContext.Remove(ticket);
-                await _persistenceContext.SaveChangesAsync();
+                persistenceContext.Remove(ticket);
+                await persistenceContext.SaveChangesAsync();
                 return 1;
             }
             catch (Exception)

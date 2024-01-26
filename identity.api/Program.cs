@@ -1,7 +1,9 @@
-using domain.data.Persistence;
+using core.data.Persistence;
 using identity.api.Repository;
 using identity.api.Service;
+using Microsoft.AspNetCore.Mvc;
 
+[assembly: ApiController]
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.

@@ -17,7 +17,7 @@ public class UserService
 
     public UserService(UserRepository userRepository, IConfiguration configuration, IServer server)
     {
-        _userRepository = userRepository;
+        _userRepository = userRepository ?? throw new ArgumentNullException();
         _keys = configuration.GetSection("Certs");
         _server = server;
     }

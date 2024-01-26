@@ -9,9 +9,11 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ticket.api", "ticket.api\ti
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "document.api", "document.api\document.api.csproj", "{6D708114-549C-40A5-8822-BEF403EA3DD2}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "domain.data", "domain.data\domain.data.csproj", "{B648461E-9FA5-45C0-8284-D801F247EACD}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "core.data", "core.data\core.data.csproj", "{B648461E-9FA5-45C0-8284-D801F247EACD}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "domain.event", "domain.event\domain.event.csproj", "{C9B8579B-5A20-4A3C-AF8E-02B638318A04}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "core.event", "core.event\core.event.csproj", "{C9B8579B-5A20-4A3C-AF8E-02B638318A04}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "core.utils", "core.utils\core.utils.csproj", "{C986ABCE-814B-455A-B7AA-FF6F4D716DD8}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -46,5 +48,9 @@ Global
 		{37E6F059-6EB4-4130-A3C2-EDD95792E70A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{37E6F059-6EB4-4130-A3C2-EDD95792E70A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{37E6F059-6EB4-4130-A3C2-EDD95792E70A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C986ABCE-814B-455A-B7AA-FF6F4D716DD8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C986ABCE-814B-455A-B7AA-FF6F4D716DD8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C986ABCE-814B-455A-B7AA-FF6F4D716DD8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C986ABCE-814B-455A-B7AA-FF6F4D716DD8}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

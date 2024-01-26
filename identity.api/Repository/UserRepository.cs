@@ -1,4 +1,4 @@
-﻿using domain.data.Persistence;
+﻿using core.data.Persistence;
 using identity.api.Model;
 using Microsoft.EntityFrameworkCore;
 
@@ -9,7 +9,7 @@ public class UserRepository
     private readonly PersistenceContext _persistenceContext;
 
     public UserRepository(PersistenceContext persistenceContext)
-        => _persistenceContext = persistenceContext;
+        => _persistenceContext = persistenceContext ?? throw new ArgumentNullException();
 
     public async Task<UserDetailsDto?> FindUserByEmail(string email)
     {

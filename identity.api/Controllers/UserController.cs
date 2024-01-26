@@ -1,21 +1,20 @@
-﻿using identity.api.Model;
+﻿using System.Net.Mime;
+using identity.api.Model;
 using identity.api.Service;
 using Microsoft.AspNetCore.Mvc;
 
 namespace identity.api.Controllers;
 
 [Route("api")]
-[ApiController]
+[Produces(MediaTypeNames.Application.Json)]
 public class UserController : ControllerBase
 {
     private readonly UserService _userService;
 
     public UserController(UserService userService)
-        => _userService = userService;
+        => _userService = userService ?? throw new ArgumentNullException();
 
     [HttpPost("login")]
-    [Consumes("application/json")]
-    [Produces("application/json")]
     public async Task<ActionResult<UserTokenDto>> Login([FromBody] UserLoginDto userLoginDto)
     {
         if (!ModelState.IsValid) return BadRequest(ModelState);

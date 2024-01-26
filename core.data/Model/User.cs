@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace domain.data.Model;
+namespace core.data.Model;
 
 [Table("users", Schema = "public")]
 public class User : EntityBase

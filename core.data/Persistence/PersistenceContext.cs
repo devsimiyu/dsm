@@ -1,10 +1,10 @@
-﻿using domain.data.Model;
+﻿using core.data.Model;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Npgsql;
 
-namespace domain.data.Persistence;
+namespace core.data.Persistence;
 
 public class PersistenceContext : DbContext
 {
